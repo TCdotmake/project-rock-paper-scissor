@@ -40,7 +40,16 @@ function handleClick(e) {
   const result = playRound(e.target.dataset.choice, getComputerChoice());
   console.log("result.msg", result.msg);
   scoreObj.update(result.result);
-  console.log("scoreObj", scoreObj);
+  updateScoreBoard(scoreObj);
+}
+
+function updateScoreBoard(scoreObj) {
+  const player = document.getElementById("player");
+  const cpu = document.getElementById("cpu");
+  const tie = document.getElementById("tie");
+  player.innerText = scoreObj.player;
+  cpu.innerText = scoreObj.cpu;
+  tie.innerText = scoreObj.tie;
 }
 
 const buttons = document.querySelectorAll(".rpsBtn");
