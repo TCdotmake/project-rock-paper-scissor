@@ -39,9 +39,20 @@ function handleClick(e) {
   console.log("e.target", e.target.dataset.choice);
   const result = playRound(e.target.dataset.choice, getComputerChoice());
   console.log("result.msg", result.msg);
+  scoreObj.update(result.result);
+  console.log("scoreObj", scoreObj);
 }
 
 const buttons = document.querySelectorAll(".rpsBtn");
 buttons.forEach((button) => {
   button.addEventListener("click", handleClick);
 });
+
+const scoreObj = {
+  player: 0,
+  cpu: 0,
+  tie: 0,
+  update(score) {
+    score > 0 ? this.player++ : score < 0 ? this.cpu++ : this.tie++;
+  },
+};
