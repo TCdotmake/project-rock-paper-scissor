@@ -1,4 +1,5 @@
 const RPS = ["Rock", "Paper", "Scissors"];
+const ROUNDS = 5;
 function getComputerChoice() {
   return RPS[Math.floor(Math.random() * 3)];
 }
@@ -37,6 +38,7 @@ function playRound(playerSelection, computerSelection) {
 
 function handleClick(e) {
   console.log("e.target", e.target.dataset.choice);
+  newRoundMsg();
   const result = playRound(e.target.dataset.choice, getComputerChoice());
   scoreObj.update(result.result);
   updateUI({ msg: result.msg });
@@ -45,6 +47,16 @@ function handleClick(e) {
 function updateUI({ msg }) {
   updateScoreBoard();
   updateLog(msg);
+  gameRecap();
+}
+
+function newRoundMsg() {
+  const { player, cpu, tie } = scoreObj;
+  if ((player + cpu + tie) % ROUNDS === 0) {
+    const msg = "------New Round------";
+    updateLog(msg);
+    scoreObj.reset();
+  }
 }
 
 function updateScoreBoard() {
@@ -64,6 +76,19 @@ function updateLog(msg) {
   log.insertAdjacentElement("afterbegin", entry);
 }
 
+function gameRecap() {
+  const { player, cpu, tie } = scoreObj;
+  if (player + cpu + tie === ROUNDS) {
+    let msg;
+    if (player > cpu) {
+      msg = "***Game set, you are winner!***";
+    } else if (cpu > player) {
+      msg = "****You lose!****";
+    } else msg = "******Tie!*****";
+    updateLog(msg);
+  }
+}
+
 const buttons = document.querySelectorAll(".rpsBtn");
 buttons.forEach((button) => {
   button.addEventListener("click", handleClick);
@@ -75,5 +100,10 @@ const scoreObj = {
   tie: 0,
   update(score) {
     score > 0 ? this.player++ : score < 0 ? this.cpu++ : this.tie++;
+  },
+  reset() {
+    this.player = 0;
+    this.cpu = 0;
+    this.tie = 0;
   },
 };
