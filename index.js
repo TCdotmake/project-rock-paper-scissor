@@ -38,18 +38,30 @@ function playRound(playerSelection, computerSelection) {
 function handleClick(e) {
   console.log("e.target", e.target.dataset.choice);
   const result = playRound(e.target.dataset.choice, getComputerChoice());
-  console.log("result.msg", result.msg);
   scoreObj.update(result.result);
-  updateScoreBoard(scoreObj);
+  updateUI({ msg: result.msg });
 }
 
-function updateScoreBoard(scoreObj) {
+function updateUI({ msg }) {
+  updateScoreBoard();
+  updateLog(msg);
+}
+
+function updateScoreBoard() {
   const player = document.getElementById("player");
   const cpu = document.getElementById("cpu");
   const tie = document.getElementById("tie");
   player.innerText = scoreObj.player;
   cpu.innerText = scoreObj.cpu;
   tie.innerText = scoreObj.tie;
+}
+
+function updateLog(msg) {
+  const log = document.getElementById("gameLog");
+  const entry = document.createElement("p");
+  entry.innerText = msg;
+  console.log("entry", entry);
+  log.insertAdjacentElement("afterbegin", entry);
 }
 
 const buttons = document.querySelectorAll(".rpsBtn");
