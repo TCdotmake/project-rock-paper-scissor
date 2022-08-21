@@ -35,33 +35,13 @@ function playRound(playerSelection, computerSelection) {
   return lose;
 }
 
-function game() {
-  let player = 0;
-  let cpu = 0;
-  let tie = 0;
-  for (let i = 0; i < 5; i++) {
-    const playerSelection = prompt("Enter 'Rock', 'Paper', or 'Scissors'...");
-    const round = playRound(playerSelection, getComputerChoice());
-    console.log(round.msg);
-    if (round.result === 0) {
-      tie++;
-    } else if (round.result > 0) {
-      player++;
-    } else {
-      cpu++;
-    }
-  }
-  console.log("Results: ");
-  console.log("player", player);
-  console.log("cpu", cpu);
-  console.log("tie", tie);
-  if (player > cpu) {
-    console.log("You won!");
-  } else if (cpu > player) {
-    console.log("You lose!");
-  } else {
-    console.log("Tie!!");
-  }
+function handleClick(e) {
+  console.log("e.target", e.target.dataset.choice);
+  const result = playRound(e.target.dataset.choice, getComputerChoice());
+  console.log("result.msg", result.msg);
 }
 
-game();
+const buttons = document.querySelectorAll(".rpsBtn");
+buttons.forEach((button) => {
+  button.addEventListener("click", handleClick);
+});
